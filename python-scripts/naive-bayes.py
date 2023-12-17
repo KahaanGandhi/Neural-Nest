@@ -9,9 +9,6 @@ class NaiveBayesClassifier:
         self.features = None
 
     def train(self, data, target_class):
-        """
-        Calculates priors 
-        # Calculating class frequencies and log priors"""
         training_instances = len(data)                              # Count the number of instances in the training data
         class_frequencies = {}                                      # Calculate the frequency of each class in target column (helpful for priors)
         for i in range(training_instances):
