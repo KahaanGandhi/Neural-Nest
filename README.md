@@ -1,5 +1,5 @@
 # Torch
-Archiving my DS/ML work.
+Storing my DS/ML work.
 
 
 
