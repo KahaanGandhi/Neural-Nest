@@ -134,8 +134,8 @@ for i in range(N):
 
 arm_counts = [0 for i in range(k)]
 arm_EV = [0 for i in range(k)]
-lin_UCB = [0]
-lin_UCB_rewards = []
+lin_ucb = [0]
+lin_ucb_rewards = []
 
 for i in range(N):
     ucb_values = []
@@ -149,8 +149,8 @@ for i in range(N):
         ucb_values.append(ucb_value)
     chosen_arm = np.argmax(ucb_values)
     reward = get_reward(chosen_arm)
-    lin_UCB_rewards.append(reward)
-    lin_UCB.append(reward + lin_UCB[-1])
+    lin_ucb_rewards.append(reward)
+    lin_ucb.append(reward + lin_ucb[-1])
     arm_counts[chosen_arm] += 1
     arm_EV[chosen_arm] = ((arm_counts[chosen_arm] - 1) * arm_EV[chosen_arm] + reward) / arm_counts[chosen_arm]
 
@@ -161,21 +161,21 @@ for i in range(N):
 first_rolling_avg = []
 greedy_rolling_avg = []
 random_rolling_avg = []
-UCB_rolling_avg = []
+ucb_rolling_avg = []
 decreasing_rolling_avg = []
 
 for i in range(N):
     first_rolling_avg.append(np.mean(first_rewards[:i+1]))
     greedy_rolling_avg.append(np.mean(greedy_rewards[:i+1]))
     random_rolling_avg.append(np.mean(random_rewards[:i+1]))
-    UCB_rolling_avg.append(np.mean(UCB_rewards[:i+1]))
+    ucb_rolling_avg.append(np.mean(lin_ucb_rewards[:i+1]))
     decreasing_rolling_avg.append(np.mean(decreasing_rewards[:i+1]))
 
 fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 axs[0].plot(epsilon_greedy, c="darkturquoise", label="ε-greedy agent")
 axs[0].plot(epsilon_first, c="forestgreen", label="ε-first agent")
 axs[0].plot(epsilon_decreasing, c="steelblue", label="ε-decreasing agent")
-axs[0].plot(lin_UCB, c="darkviolet", label="UCB agent")
+axs[0].plot(lin_ucb, c="darkviolet", label="UCB agent")
 axs[0].plot(random_arm, c="maroon", label="Random agent")
 axs[0].plot(arm1_scores, c="black", alpha=0.3, linestyle="dashed", label="Arms")
 axs[0].plot(arm2_scores, c="black", alpha=0.3, linestyle="dashed")
@@ -185,7 +185,7 @@ axs[0].legend()
 axs[1].plot(greedy_rolling_avg, c="darkturquoise", label="ε-greedy agent")
 axs[1].plot(first_rolling_avg, c="forestgreen", label="ε-first agent")
 axs[1].plot(decreasing_rolling_avg, c="steelblue", label="ε-decreasing agent")
-axs[1].plot(UCB_rolling_avg, c="darkviolet", label="UCB agent")
+axs[1].plot(ucb_rolling_avg, c="darkviolet", label="UCB agent")
 axs[1].plot(random_rolling_avg, c="maroon", label="Random agent")
 axs[1].legend()
 axs[1].set_title("Rolling Average")
